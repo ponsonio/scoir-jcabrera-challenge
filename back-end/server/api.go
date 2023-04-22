@@ -36,6 +36,7 @@ func enableCors(w *http.ResponseWriter) {
 
 func (a *api) loginWithCredentials(w http.ResponseWriter, r *http.Request) {
 
+	enableCors(&w)
 	var userLogin auth.UserLogin
 	reqBody, _ := io.ReadAll(r.Body)
 
@@ -49,7 +50,7 @@ func (a *api) loginWithCredentials(w http.ResponseWriter, r *http.Request) {
 	token, authErr := service.AuthenticateWithLogin(userLogin)
 
 	if authErr != nil {
-		http.Error(w, authErr.Error(), http.StatusInternalServerError)
+		http.Error(w, authErr.Error(), http.StatusUnauthorized)
 		return
 	}
 
