@@ -1,6 +1,7 @@
 import React from "react";
 import NewLogin from "./component/form/NewLogin";
 import Home from "./component/home/Home";
+import "./index.css";
 
 export const AuthContext = React.createContext();
 
@@ -8,6 +9,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   token: null,
+  error: null,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,6 +21,7 @@ const reducer = (state, action) => {
         isAuthenticated: true,
         user: action.payload.user,
         token: action.payload.token,
+        error: action.payload.error,
       };
     case "LOGOUT":
       localStorage.clear();
@@ -26,6 +29,7 @@ const reducer = (state, action) => {
         ...state,
         isAuthenticated: false,
         user: null,
+        error: action.payload.error,
       };
     default:
       return state;
@@ -51,15 +55,30 @@ function App() {
           type: "LOGIN",
           payload: {
             user: data.enteredUserName,
+            error: null,
           },
         });
       }
       if (res.status === 401) {
         console.log("200 res", res.body);
+        dispatch({
+          type: "LOGOUT",
+          payload: {
+            user: data.enteredUserName,
+            error: "Incorrect user or password",
+          },
+        });
       }
     } catch (err) {
       console.log("catch", err.statusText);
       console.log(err);
+      dispatch({
+        type: "LOGOUT",
+        payload: {
+          user: data.enteredUserName,
+          error: "login error:" + err.message,
+        },
+      });
     }
   };
 
@@ -67,6 +86,7 @@ function App() {
 
   return (
     <div>
+      <h3 className="error">{state.error}</h3>
       <div className="App">
         {!state.isAuthenticated ? (
           <NewLogin onLoginHandler={onLoginHandler} />

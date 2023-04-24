@@ -4,6 +4,7 @@ const LoginForm = (props) => {
   const [userInput, setUserInput] = useState({
     enteredUserName: "",
     enteredUserPassword: "",
+    errorMessage: "",
   });
 
   const submitHandler = (event) => {

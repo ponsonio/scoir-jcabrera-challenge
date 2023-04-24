@@ -1,20 +1,62 @@
-# User Login Code Challenge
+# Dependencies
+This is the environment used for development, other version has not been tested, but probably will work
 
-Using a JavaScript framework of your choice (preferably [React](https://reactjs.org/)), create a simple login screen that allows users to enter their username and password and submit the login form to a backend process.
+* npm 8.11.0
+* go  1.19.4
 
-Create a backend (preferably using [GoLang](https://go.dev/), but not required) that processes the login information and checks if the username and password are valid. If the login information is valid, the backend should return a success message to the user. If the login information is invalid, the backend should return an error message to the user.
+# How-To
+## Back End
 
+Execute main.go on the directory back end
 
-## Instructions
-1. Click "Use this template" to create a copy of this repository in your personal github account.  
-1. Update the README in your new repo with:
-    * a `How-To` section containing any instructions needed to execute your program.
-    * an `Assumptions` section containing documentation on any assumptions made while interpreting the requirements.
-1. Send an email to Scoir (code_challenge@scoir.com) with a link to your newly created repo containing the completed exercise (preferably no later than one day before your next interview).
+``` shell
+go run main.go
+```
 
-## Expectations
-1. This exercise is meant to drive a conversation between you and Scoir's hiring team.  
-1. Please invest only enough time needed to demonstrate your approach to problem solving and code design.  
-1. Within reason, treat your solution as if it would become a production system.
-1. If you have any questions, feel free to contact us at code_challenge@scoir.com
+## Front end
+Navigate to the dir ´front-enf´, execute 
 
+``` shell
+npn install
+npm start
+```
+that should start a development server locally
+
+## Usage
+To test the api, any http client can be used, in this case we use postman:
+
+![img.png](img.png)
+
+To use the UI, navigate to : localhost:3000
+
+![img_3.png](img_3.png)
+
+Credentials are : scoir/scoir , in case of correct and incorrect input, you'll see this screens acordingly
+
+![img_2.png](img_2.png)
+
+![img_1.png](img_1.png)
+
+# Assumptions
+
+* The login service, returns a mock JWT Token as it's a common and probed secure authentication method, this can be saved on the local storage and expired as the security requirements/needs
+* For simplicity, user credentials are hardcoded in the code, a secure store shall be used.
+* Front end shall have it's on test, has been omitted due time constraint
+* Secure protocols shall be in place (https and corresponding certificates) and cors shall not be active, This has been omitted as they belong to infrastructure layer
+* Log service hasn't been included, but it's considered imperative, for example the adoption of a logging infrastructure such as *Datadog* or *CloudWatch*
+
+# Test
+To execute back end test :
+
+```shell
+➜  back-end git:(main) ✗ go test ./...
+ok      github.com/ponsonio/scoir-jcabrera-challenge/back-end   0.456s
+ok      github.com/ponsonio/scoir-jcabrera-challenge/back-end/auth      0.279s
+?       github.com/ponsonio/scoir-jcabrera-challenge/back-end/server    [no test files]
+```
+
+Test are in place to present the approach on how to cover layer of components. Integration tests has not being included due time/infrastructure reasons. Still is wort mention that can be
+fairly easy to implemented using for example docker locally or a docker based environment on CI.
+
+Front end test has been not included due time reasons, and they don't seem necessary to show the approach taken, although they can be implemented using for example
+Jest or any other React testing library.
